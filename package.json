@@ -1,0 +1,17 @@
+{
+  "name": "recall-addon",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A private, searchable memory of everything you read on the web.",
+  "scripts": {
+    "test": "node --test tests/unit/",
+    "test:e2e": "node --test --test-concurrency=1 tests/e2e/",
+    "icons": "node scripts/icons.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
+    "pack": "node scripts/pack.mjs"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "6.2.7"
+  }
+}
