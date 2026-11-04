@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dungeon Bench</title>
+  <link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Dungeon Bench</h1>
+    <nav>
+      <button data-tab="board" class="tab active">Leaderboard</button>
+      <button data-tab="replay" class="tab">Replay</button>
+    </nav>
+    <label class="file">Open replay<input type="file" id="file" accept=".json" hidden></label>
+  </header>
+
+  <main>
+    <section id="board" class="panel active">
+      <p id="board-empty" class="empty" hidden>No runs yet. Run <code>npm run bench</code>, then reload.</p>
+      <table id="summary" class="grid-table"></table>
+      <h2 id="matrix-title" hidden>Runs by seed</h2>
+      <p class="hint" id="matrix-hint" hidden>Each cell is one run: deepest depth reached, colored by outcome. Click a cell to watch it.</p>
+      <div class="scroll"><table id="matrix" class="grid-table matrix"></table></div>
+    </section>
+
+    <section id="replay" class="panel">
+      <p id="replay-empty" class="empty">Pick a run from the leaderboard, or open a replay file.</p>
+      <div id="player" hidden>
+        <div class="run-title" id="run-title"></div>
+        <div class="stage">
+          <div class="map-wrap">
+            <div class="map-tools">
+              <label><input type="checkbox" id="god"> Show the whole floor</label>
+              <span id="turn" class="muted"></span>
+            </div>
+            <pre id="map" class="map" aria-label="Dungeon map"></pre>
+            <div class="controls">
+              <button id="prev" title="Previous (←)">◀</button>
+              <button id="toggle" title="Play / pause (space)">▶</button>
+              <button id="next" title="Next (→)">▶|</button>
+              <input type="range" id="scrub" min="0" value="0">
+              <select id="speed" title="Speed">
+                <option value="4">4/s</option>
+                <option value="15" selected>15/s</option>
+                <option value="60">60/s</option>
+              </select>
+            </div>
+            <svg id="chart" class="chart" viewBox="0 0 600 90" preserveAspectRatio="none" aria-label="HP and depth over time"></svg>
+          </div>
+          <aside class="side">
+            <div class="stats" id="stats"></div>
+            <div class="block">
+              <div class="label">Action</div>
+              <div id="action" class="action"></div>
+            </div>
+            <div class="block">
+              <div class="label">Reasoning</div>
+              <div id="thought" class="thought"></div>
+            </div>
+            <div class="block">
+              <div class="label">Log</div>
+              <ol id="log" class="log"></ol>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>

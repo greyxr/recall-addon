@@ -1,17 +1,24 @@
 {
-  "name": "recall-addon",
+  "name": "dungeon-bench",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A private, searchable memory of everything you read on the web.",
+  "description": "A deterministic roguelike that AI agents play over MCP, with a benchmark harness and a replay viewer.",
+  "engines": { "node": ">=22.18" },
+  "bin": { "dungeon-bench": "src/cli.ts" },
   "scripts": {
-    "test": "node --test tests/unit/",
-    "test:e2e": "node --test --test-concurrency=1 tests/e2e/",
-    "icons": "node scripts/icons.mjs",
-    "screenshots": "node scripts/screenshots.mjs",
-    "pack": "node scripts/pack.mjs"
+    "play": "node src/cli.ts play",
+    "bench": "node src/cli.ts bench",
+    "mcp": "node src/cli.ts mcp",
+    "serve": "node src/cli.ts serve",
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.4.0"
   },
   "devDependencies": {
-    "fake-indexeddb": "6.2.7"
+    "@types/node": "22.20.5",
+    "typescript": "6.0.2"
   }
 }
