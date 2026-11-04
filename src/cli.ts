@@ -28,6 +28,7 @@ Options
   --effort <level>         low, medium, high, xhigh or max (default medium).
   --budget <dollars>       Spend cap per Claude run (default 5).
   --max-calls <n>          Tool call cap per Claude run (default 600).
+  --concurrency <n>        Runs in parallel per agent, useful for API agents (default 1).
   --out <dir>              Where replays go (default runs).
   --port <n>               Port for serve (default 8080).
 `
@@ -45,6 +46,7 @@ const { positionals, values } = parseArgs({
     effort: { type: 'string', default: 'medium' },
     budget: { type: 'string', default: '5' },
     'max-calls': { type: 'string', default: '600' },
+    concurrency: { type: 'string', default: '1' },
     out: { type: 'string', default: 'runs' },
     port: { type: 'string', default: '8080' },
     help: { type: 'boolean', short: 'h' },
@@ -84,6 +86,7 @@ switch (values.help ? 'help' : positionals[0]) {
         budget: Number(values.budget),
         maxCalls: Number(values['max-calls']),
       },
+      concurrency: Number(values.concurrency),
       log: line => console.log(line),
     })
     console.log(`\n${table(summarize(rows))}\n\nReplays in ${values.out}/. View them with: dungeon-bench serve`)

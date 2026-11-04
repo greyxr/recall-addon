@@ -14,6 +14,7 @@ export type BenchOptions = {
   maxTurns: number
   maxDepth: number
   claude: ClaudeOptions
+  concurrency?: number
   log?: (line: string) => void
 }
 
@@ -80,12 +81,20 @@ export function table(summaries: Summary[]): string {
   return [header, ...rows].map(r => r.map((cell, i) => cell.padEnd(widths[i])).join('  ')).join('\n')
 }
 
+async function pool<T>(items: T[], limit: number, run: (item: T) => Promise<void>) {
+  const queue = [...items]
+  const worker = async () => {
+    while (queue.length) await run(queue.shift()!)
+  }
+  await Promise.all(Array.from({ length: Math.max(1, Math.min(limit, items.length)) }, worker))
+}
+
 export async function bench(options: BenchOptions): Promise<Row[]> {
   const log = options.log ?? (() => {})
   const rows: Row[] = []
   for (const name of options.agents) {
     const agent = makeAgent(name, options.claude)
-    for (const seed of options.seeds) {
+    await pool(options.seeds, options.concurrency ?? 1, async seed => {
       const session = new Session({ seed, agent: agent.name, model: agent.model, toolset: options.toolset, maxTurns: options.maxTurns, maxDepth: options.maxDepth })
       try {
         await agent.play(session)
@@ -97,7 +106,7 @@ export async function bench(options: BenchOptions): Promise<Row[]> {
       rows.push({ agent: agent.name, seed, file, result })
       const outcome = result.won ? 'won' : result.dead ? result.cause : 'out of turns'
       log(`${agent.name.padEnd(18)} seed ${String(seed).padEnd(4)} score ${String(result.score).padEnd(5)} depth ${result.deepest}  ${outcome}`)
-    }
+    })
   }
-  return rows
+  return rows.sort((a, b) => a.agent.localeCompare(b.agent) || a.seed - b.seed)
 }

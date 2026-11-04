@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dungeon-bench": {
+      "command": "node",
+      "args": ["src/cli.ts", "mcp", "--seed", "1"]
+    }
+  }
+}
