@@ -2,7 +2,7 @@ import { GLYPHS } from './content.ts'
 import { WALL } from './floor.ts'
 import type { Game, Item, Monster } from './game.ts'
 import { slotLetter } from './game.ts'
-import { HEIGHT, WIDTH, distance, index, neighbors, same } from './grid.ts'
+import { HEIGHT, WIDTH, index, neighbors, same } from './grid.ts'
 import type { Point } from './grid.ts'
 
 export type Observation = {
@@ -87,6 +87,3 @@ export function describe(game: Game): string {
   return lines.join('\n')
 }
 
-export function nearest<T>(from: Point, things: T[], at: (t: T) => Point): T | undefined {
-  return [...things].sort((a, b) => distance(from, at(a)) - distance(from, at(b)))[0]
-}

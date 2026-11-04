@@ -1,4 +1,4 @@
-import { GLYPHS, HEART, WARDEN, goldFor, itemFor, monsterFor } from './content.ts'
+import { HEART, WARDEN, goldFor, itemFor, monsterFor } from './content.ts'
 import type { ItemSpec, MonsterKind } from './content.ts'
 import { HEIGHT, WIDTH, findPath, index } from './grid.ts'
 import type { Point } from './grid.ts'
@@ -106,6 +106,3 @@ export function generateFloor(seed: number, depth: number, maxDepth: number): Fl
   return { depth, tiles, rooms, start, stairs: last ? null : goal, monsters, items }
 }
 
-export function glyphOf(spec: ItemSpec): string {
-  return GLYPHS[spec.kind]
-}
